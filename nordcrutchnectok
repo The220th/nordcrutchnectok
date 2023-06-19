@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+
+# -*- coding: utf-8 -*-
+
+import argparse
+import sys
+from ndcr_mod import pout, errorExit
+
+from ndcr_main_download import main_download
+from ndcr_main_diff import main_diff
+from ndcr_main_conns import main_initconns, main_mergeconns, main_topconns
+from ndcr_main_checkip import main_checkip
+from ndcr_main_connect import main_connect, main_disconnect, main_keepconnect
+from ndcr_main_help import main_help
+
+# TODO:
+# CHECK INF
+# ADD TRAKING FOR qbit
+
+if __name__ == '__main__':
+    args = sys.argv
+    MAINS = {"help": main_help,
+             "download": main_download, "diff": main_diff, "initconns": main_initconns, "mergeconns": main_mergeconns, "topconns": main_topconns,
+             "checkip": main_checkip, "connect": main_connect, "disconnect": main_disconnect, "keepconnect": main_keepconnect}
+
+    err_msg = "Syntax error (use \"> nordcrutchnectok help\"). \nExpected: \"> nordcrutchnectok {module_name} {args}\", where {module_name}: \n"
+    err_msg += f"\t{', '.join(list(MAINS.keys()))}\n"
+    if(len(args) <= 1):
+        errorExit(err_msg)
+
+
+    module_name = args[1]
+    other_args = args[1:]
+    if module_name in MAINS:
+        MAINS[module_name](other_args)
+    else:
+        errorExit(err_msg)

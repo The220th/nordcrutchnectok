@@ -92,7 +92,7 @@ def try_one_connect(server_name: str) -> True or False or None:
         elif(r[0].find("ou are not logged in")): # r[2] == 1
             # ('\r-\r \r\r-\r \rYou are not logged in.\n', '', 1)
             pout(f"\"You are not logged in\" error! Login again by executing \"> nordvpn login\". ")
-            if(GL.do_end_arg):
+            if(GL.do_end_arg != None):
                 try:
                     plog(f"Executing command end: \"{args.do_end}\": ")
                     r = exe(args.do_end, std_err_fd=subprocess.PIPE)
@@ -224,6 +224,7 @@ def main_keepconnect(argv: list):
     args = main_keepconnect_args(argv)
 
     GL.keepconnect_gi = 0
+    GL.do_end_arg = None
 
     connect_args = ["connect", args.connections_file[0], "--mode", str(args.mode),
     "--trying_connect", str(args.trying_connect),

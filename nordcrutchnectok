@@ -13,6 +13,8 @@ from ndcr_main_checkip import main_checkip
 from ndcr_main_connect import main_connect, main_disconnect, main_keepconnect
 from ndcr_main_help import main_help
 
+# ver 1.01
+
 if __name__ == '__main__':
     args = sys.argv
     MAINS = {"help": main_help,

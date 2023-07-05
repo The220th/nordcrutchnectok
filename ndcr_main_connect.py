@@ -89,6 +89,22 @@ def try_one_connect(server_name: str) -> True or False or None:
                 return False
             else:
                 return True
+        elif(r[0].find("ou are not logged in")): # r[2] == 1
+            # ('\r-\r \r\r-\r \rYou are not logged in.\n', '', 1)
+            pout(f"\"You are not logged in\" error! Login again by executing \"> nordvpn login\". ")
+            if(GL.do_end_arg):
+                try:
+                    plog(f"Executing command end: \"{args.do_end}\": ")
+                    r = exe(args.do_end, std_err_fd=subprocess.PIPE)
+                    pout(f"Output: \n{r}\n\n")
+                except:
+                    pout(f"Error while executing command!!!")
+            while(True):
+                pout(f"Exit and disconnect manually by CTRL+C. Bye")
+                time.sleep(999*99)
+        else:
+            pout(f"(ndcr_main_connect.try_one_connect) Failed successully. Another branch. Unknown error")
+            return None
 
     return False
 
@@ -215,6 +231,9 @@ def main_keepconnect(argv: list):
     if(args.tunneling_inf != None):
         connect_args.append("--tunneling_inf")
         connect_args.append(args.tunneling_inf)
+    
+    if(args.do_end != None):
+        GL.do_end_arg = args.do_end
 
     plog("KEEPCONNECT STARTING... \n")
     time.sleep(5)
@@ -244,7 +263,7 @@ def main_keepconnect(argv: list):
         plog(f"({GL.keepconnect_gi}) Connection is broken. Connecting again...")
         
         if(args.do_end != None):
-            plog(f"Executing command after: \"{args.do_end}\": ")
+            plog(f"Executing command end: \"{args.do_end}\": ")
             r = exe(args.do_end, std_err_fd=subprocess.PIPE)
             pout(f"Output: \n{r}\n\n")
         

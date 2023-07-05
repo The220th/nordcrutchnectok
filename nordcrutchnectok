@@ -13,10 +13,6 @@ from ndcr_main_checkip import main_checkip
 from ndcr_main_connect import main_connect, main_disconnect, main_keepconnect
 from ndcr_main_help import main_help
 
-# TODO:
-# CHECK INF
-# ADD TRAKING FOR qbit
-
 if __name__ == '__main__':
     args = sys.argv
     MAINS = {"help": main_help,

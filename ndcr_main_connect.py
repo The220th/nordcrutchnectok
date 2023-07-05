@@ -94,8 +94,8 @@ def try_one_connect(server_name: str) -> True or False or None:
             pout(f"\"You are not logged in\" error! Login again by executing \"> nordvpn login\". ")
             if(GL.do_end_arg != None):
                 try:
-                    plog(f"Executing command end: \"{args.do_end}\": ")
-                    r = exe(args.do_end, std_err_fd=subprocess.PIPE)
+                    plog(f"Executing command end: \"{GL.do_end_arg}\": ")
+                    r = exe(GL.do_end_arg, std_err_fd=subprocess.PIPE)
                     pout(f"Output: \n{r}\n\n")
                 except:
                     pout(f"Error while executing command!!!")

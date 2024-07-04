@@ -89,7 +89,7 @@ def try_one_connect(server_name: str) -> True or False or None:
                 return False
             else:
                 return True
-        elif(r[0].find("ou are not logged in")): # r[2] == 1
+        elif(r[0].find("ou are not logged in") != -1): # r[2] == 1
             # ('\r-\r \r\r-\r \rYou are not logged in.\n', '', 1)
             pout(f"\"You are not logged in\" error! Login again by executing \"> nordvpn login\". ")
             if(GL.do_end_arg != None):
@@ -101,8 +101,15 @@ def try_one_connect(server_name: str) -> True or False or None:
                     pout(f"Error while executing command!!!")
             while(True):
                 pout(f"Exit and disconnect manually by CTRL+C. Bye")
-                time.sleep(999*99)
+                time.sleep(999*99*99999)
+        elif(r[0].find("The VPN connection has failed") != -1):
+            pout(f"\"The VPN connection has failed\" error! Trying another way. ")
+            return False
+        elif(r[0].find("t have a dedicated IP subscription") != 1):
+            pout(f"Do not have a dedicated IP subscription error")
+            return False
         else:
+            pout(r)
             pout(f"(ndcr_main_connect.try_one_connect) Failed successully. Another branch. Unknown error")
             return None
 
@@ -205,6 +212,7 @@ def main_keepconnect_args(args: list) -> "ArgumentParser":
 def ifkeepping(deep: int = 0) -> bool:
     MAX_DEEP = 5
     anw = exe(f"ping -c 10 -I {GL.INF} {GL.WHERE_PING}", debug=False, std_err_fd=subprocess.PIPE)
+    # print(f"({deep}) {anw}")
     if(anw[1] != ""):
         if(deep < MAX_DEEP):
             time.sleep(5)
@@ -253,11 +261,14 @@ def main_keepconnect(argv: list):
 
         if(args.do_after != None):
             plog(f"Executing command after: \"{args.do_after}\": ")
-            r = exe(args.do_after, std_err_fd=subprocess.PIPE)
-            pout(f"Output: \n{r}\n\n")
+            print(f"> {args.do_after}")
+            os.system(args.do_after)
+            # r = exe(args.do_after, std_err_fd=subprocess.PIPE)
+            # pout(f"Output: \n{r}\n\n")
 
         while(True):
             PINGED = ifkeepping()
+            # print(f"ping of keep_{GL.keepconnect_gi} is {PINGED}")
             if(PINGED == False):
                 break
             time.sleep(5)
